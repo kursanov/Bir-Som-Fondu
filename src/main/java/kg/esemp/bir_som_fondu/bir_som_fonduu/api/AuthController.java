@@ -12,15 +12,16 @@ import kg.esemp.bir_som_fondu.bir_som_fonduu.config.request.SignUpRequest;
 import kg.esemp.bir_som_fondu.bir_som_fonduu.config.responce.AuthenticationResponse;
 import kg.esemp.bir_som_fondu.bir_som_fonduu.config.responce.JwtResponse;
 import kg.esemp.bir_som_fondu.bir_som_fonduu.config.JwtService;
+import kg.esemp.bir_som_fondu.bir_som_fonduu.config.responce.UserResponse;
 import kg.esemp.bir_som_fondu.bir_som_fonduu.dto.User;
+import kg.esemp.bir_som_fondu.bir_som_fonduu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,10 +30,13 @@ public class AuthController {
     private final AuthService authService;
     private final JwtService jwtService;
 
+    private final UserService userService;
+
     @Autowired
-    public AuthController(AuthService authService, JwtService jwtService) {
+    public AuthController(AuthService authService, JwtService jwtService, UserService userService) {
         this.authService = authService;
         this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     @PostMapping("/signUp")
@@ -58,6 +62,8 @@ public class AuthController {
     public AuthenticationResponse signIn (@Valid @RequestBody SignInRequest sign){
         return authService.signIn(sign);
     }
+
+
 
 }
 
